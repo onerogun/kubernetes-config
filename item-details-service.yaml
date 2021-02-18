@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-details-container
+  labels:
+    app: item-details-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: item-details-container
+  template:
+    metadata:
+      labels:
+        app: item-details-container
+    spec:
+      containers:
+        - name: item-details-container
+          image: ogunfz09/item-details-reactive:latest
+          ports:
+            - containerPort: 9393
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: item-details-service
+  labels:
+    app: item-details-service
+spec:
+  selector:
+    app: item-details-container
+  ports:
+    - protocol: TCP
+      port: 9393
+      targetPort: 9393

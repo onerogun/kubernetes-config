@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-service-container
+  labels:
+    app: item-service-container
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: item-service-container
+  template:
+    metadata:
+      labels:
+        app: item-service-container
+    spec:
+      containers:
+        - name: item-service-container
+          image: ogunfz09/itemservice:latest
+          ports:
+            - containerPort: 9001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: item-service
+  labels:
+    app: item-service
+spec:
+  selector:
+    app: item-service-container
+  ports:
+    - protocol: TCP
+      port: 9001
+      targetPort: 9001
